@@ -24,11 +24,27 @@ services:
     redis:
         image: redis:latest
         container_name: docker-redis
-        command: redis-server /usr/local/etc/redis/redis.conf
+        #command: redis-server /usr/local/etc/redis/redis.conf
         volumes:
             - './config/redis/redis.conf:/usr/local/etc/redis/redis.conf'
         ports:
             - "6379:6379"
+    gitlab:
+        image: gitlab/gitlab-ce:latest
+        container_name: docker-gitlab
+        hostname: localhost
+        environment:
+            GITLAB_OMNIBUS_CONFIG: |
+                external_url 'http://localhost:7000'
+                gitlab_rails['gitlab_shell_ssh_port'] = 7001
+        ports:
+            - "7000:80"
+            - "7001:22"
+            - '443:443'
+        volumes:
+            - './gitlab/config:/etc/gitlab'
+            - './gitlab/logs:/var/log/gitlab'
+            - './gitlab/data:/var/opt/gitlab'
         restart: always
 volumes:
     server_volume:
