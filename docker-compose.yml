@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 services:
     db:
         image: mysql:latest
@@ -34,6 +34,7 @@ services:
         container_name: docker-gitlab
         hostname: localhost
         environment:
+            TZ: 'Asia/Seoul'
             GITLAB_OMNIBUS_CONFIG: |
                 external_url 'http://localhost:7000'
                 gitlab_rails['gitlab_shell_ssh_port'] = 7001
@@ -46,6 +47,7 @@ services:
             - './gitlab/logs:/var/log/gitlab'
             - './gitlab/data:/var/opt/gitlab'
         restart: always
+        shm_size: '256m'
 volumes:
     server_volume:
         external: true
