@@ -1,25 +1,36 @@
-# gitlab 변경 파일 재구성 후 재가동
-gitlab-ctl reconfigure
+## gitlab mount 디렉터리
+- /etc/gitlab
+  - gitlab config 파일이 들어 있습니다.
+- /var/log/gitlab
+  - gitlab 로그 파일이 들어 있습니다.
+- /var/opt/gitlab
+  - gitlab 데이터 파일이 들어 있습니다.
 
-# gitlab 중지
-gitlab-ctl stop
 
-# gitlab 시작
-gitlab-ctl start
+## gitlab-ctl 사용
+#### gitlab 변경 파일 재구성 후 재가동
+<pre>gitlab-ctl reconfigure</pre>
 
-# gitlab 재시작
-gitlab-ctl restart
+#### gitlab 중지
+<pre>gitlab-ctl stop</pre>
 
-# gitlab daemon 상태 확인
-gitlab-ctl status
+#### gitlab 시작
+<pre>gitlab-ctl start</pre>
 
-# gitlab root 접속 패스워드 파일 위치
-/etc/gitlab/initial_root_password
+#### gitlab 재시작
+<pre>gitlab-ctl restart</pre>
 
-# gitlab 구동 시 확인사항
+#### gitlab daemon 상태 확인
+<pre>gitlab-ctl status</pre>
+
+### gitlab root 접속 패스워드 파일 위치
+<pre>/etc/gitlab/initial_root_password</pre>
+
+## gitlab 구동 시 확인사항
 gitlab.rb 파일에 external_url이 설정되어 있어야 정상 구동됩니다.
 
-# gitlab daemon 구동 실패 시 status
+### gitlab daemon 구동 실패 시 status
+<pre>
 root@127:/# gitlab-ctl status
 run: gitaly: (pid 538) 348s; run: log: (pid 572) 345s
 run: gitlab-kas: (pid 766) 316s; run: log: (pid 779) 315s
@@ -27,8 +38,10 @@ run: logrotate: (pid 500) 360s; run: log: (pid 508) 359s
 run: postgresql: (pid 590) 327s; run: log: (pid 601) 326s
 run: redis: (pid 516) 354s; run: log: (pid 529) 351s
 run: sshd: (pid 40) 380s; run: log: (pid 39) 380s
+</pre>
 
-# gitlab daemon 구동 성공 시 status
+### gitlab daemon 구동 성공 시 status
+<pre>
 root@127:/# gitlab-ctl status
 run: alertmanager: (pid 1428) 38s; run: log: (pid 1118) 120s
 run: gitaly: (pid 1435) 38s; run: log: (pid 572) 517s
@@ -45,4 +58,4 @@ run: redis: (pid 516) 526s; run: log: (pid 529) 523s
 run: redis-exporter: (pid 1399) 41s; run: log: (pid 1062) 134s
 run: sidekiq: (pid 928) 159s; run: log: (pid 937) 158s
 run: sshd: (pid 40) 552s; run: log: (pid 39) 552s
-
+</pre>
