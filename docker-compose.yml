@@ -43,12 +43,12 @@ services:
         container_name: docker-zookeeper
         environment:
             - ZOOKEEPER_SERVER_ID=1
-            - ZOOKEEPER_CLIENT_PORT=2100
+            - ZOOKEEPER_CLIENT_PORT=2181
             - ZOOKEEPER_TICK_TIME=2000
             - ZOOKEEPER_INIT_LIMIT=5
             - ZOOKEEPER_SYNC_LIMIT=2
         ports:
-            - "21000:2100"
+            - "2181:2181"
         networks:
           - docker-net
     kafka:
@@ -58,14 +58,25 @@ services:
         ports:
         - "9092:9092"
         - "9094:9094"
+        - "9095:9095"
         environment:
             - KAFKA_BROKER_ID=1
-            - KAFKA_ZOOKEEPER_CONNECT=docker-zookeeper:2100
+            - KAFKA_ZOOKEEPER_CONNECT=docker-zookeeper:2181
             - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://127.0.0.1:9093,INNER_EXTERNAL://192.168.45.101:9094
             - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,INNER_EXTERNAL:PLAINTEXT
             - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
             - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
             - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+        networks:
+          - docker-net
+    kafka-web-ui:
+        image: provectuslabs/kafka-ui:latest
+        container_name: kafka-web-ui
+        environment:
+            - KAFKA_CLUSTERS_0_NAME=local
+            - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=kafka:9092
+            - KAFKA_CLUSTERS_0_ZOOKEEPER_CONNECT=docker-zookeeper:2181
+            - SERVER_SERVLET_CONTEXT_PATH=/kafka-ui
         networks:
           - docker-net
     # grafana:
