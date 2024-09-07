@@ -19,6 +19,8 @@ services:
         volumes:
             - './config/nginx/nginx.conf:/etc/nginx/nginx.conf'
             - './storage/nginx_log:/var/log/nginx'
+        environment:
+            - TZ=Asia/Seoul
         ports:
             - "80:80"
         restart: always
@@ -34,6 +36,8 @@ services:
         image: redis:latest
         container_name: docker-redis
         #command: redis-server /usr/local/etc/redis/redis.conf
+        environment:
+            - TZ=Asia/Seoul
         volumes:
             - './config/redis/redis.conf:/usr/local/etc/redis/redis.conf'
         ports:
@@ -47,6 +51,7 @@ services:
             - ZOOKEEPER_TICK_TIME=2000
             - ZOOKEEPER_INIT_LIMIT=5
             - ZOOKEEPER_SYNC_LIMIT=2
+            - TZ=Asia/Seoul
         ports:
             - "2181:2181"
         networks:
@@ -67,6 +72,7 @@ services:
             - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
             - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
             - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+            - TZ=Asia/Seoul
         networks:
           - docker-net
     kafka-web-ui:
